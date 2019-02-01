@@ -67,9 +67,7 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
-
+        TrueFalse exQuestion = new TrueFalse(R.string.question_1,true);
 
 
     }
