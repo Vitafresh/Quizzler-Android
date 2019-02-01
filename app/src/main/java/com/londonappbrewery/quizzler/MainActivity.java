@@ -2,14 +2,11 @@ package com.londonappbrewery.quizzler;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.Console;
 
 public class MainActivity extends Activity {
 
@@ -61,26 +58,29 @@ public class MainActivity extends Activity {
         mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
 
 
-        View.OnClickListener myOnClickListener = new View.OnClickListener() {
+        View.OnClickListener trueOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("DebugInfo","Listener: True button pressed");
 
+                checkAnswer(true);
                 updateQuestion();
 
-                Toast myToast = Toast.makeText(getApplicationContext(),"True button pressed",Toast.LENGTH_LONG);
-                myToast.show();
+//                Toast myToast = Toast.makeText(getApplicationContext(),"True button pressed",Toast.LENGTH_LONG);
+//                myToast.show();
             }
         };
 
         //Set callback to buttons
-        mTrueButton.setOnClickListener(myOnClickListener);
+        mTrueButton.setOnClickListener(trueOnClickListener);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("DebugInfo","Listener: False button pressed");
+
+                checkAnswer(false);
                 updateQuestion();
-                Toast.makeText(getApplicationContext(),"False button pressed",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"False button pressed",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -88,13 +88,22 @@ public class MainActivity extends Activity {
 
     }
 
-    public void updateQuestion(){
+    private void updateQuestion(){
 //        mIndexQuestion = (mIndexQuestion + 1) % mQuestionBank.length;
-
         mIndexQuestion++;
         if(mIndexQuestion == mQuestionBank.length){mIndexQuestion=0;};
-
         mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
-        mScoreTextView.setText(Integer.toString(mIndexQuestion + 1) + " of 13");
+        mScoreTextView.setText(Integer.toString(mIndexQuestion + 1) + " of " + mQuestionBank.length);
     }
+
+    private void checkAnswer(boolean userSelected){
+        boolean correctAnswer = mQuestionBank[mIndexQuestion].isAnswer();
+        if(userSelected==correctAnswer){
+            Toast.makeText(getApplicationContext(), R.string.correct_toast, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), R.string.incorrect_toast, Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

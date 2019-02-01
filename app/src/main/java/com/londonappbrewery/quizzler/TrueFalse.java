@@ -19,11 +19,11 @@ public class TrueFalse {
         this.mQuestionID = mQuestionID;
     }
 
-    public boolean ismAnswer() {
+    public boolean isAnswer() {
         return mAnswer;
     }
 
-    public void setmAnswer(boolean mAnswer) {
+    public void setAnswer(boolean mAnswer) {
         this.mAnswer = mAnswer;
     }
 }
