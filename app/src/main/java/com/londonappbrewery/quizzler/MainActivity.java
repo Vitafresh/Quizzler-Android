@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.io.Console;
 
@@ -46,6 +48,24 @@ public class MainActivity extends Activity {
         double x = 5.99;
         int y = (int)x;
         Log.d("DebInfo","y=" + y);
+
+        View.OnClickListener myOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("DebugInfo","Listener: True button pressed");
+                Toast myToast = Toast.makeText(getApplicationContext(),"True button pressed",Toast.LENGTH_LONG);
+                myToast.show();
+            }
+        };
+
+        mTrueButton.setOnClickListener(myOnClickListener);
+        mFalseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("DebugInfo","Listener: False button pressed");
+                Toast.makeText(getApplicationContext(),"False button pressed",Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 
