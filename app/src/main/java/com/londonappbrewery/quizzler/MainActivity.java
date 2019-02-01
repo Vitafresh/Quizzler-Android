@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
         Button mFalseButton;
 
         TextView mQuestionTextView;
+        TextView mScoreTextView;
         int mIndexQuestion = 0;
         int mQuestionID;
 
@@ -51,6 +52,7 @@ public class MainActivity extends Activity {
         mFalseButton = (Button) findViewById(R.id.false_button);
 
         mQuestionTextView=(TextView)findViewById(R.id.question_text_view);
+        mScoreTextView=(TextView)findViewById(R.id.score);
 
 
 //        TrueFalse firstQuestion = mQuestionBank[mIndexQuestion];
@@ -64,6 +66,8 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 Log.d("DebugInfo","Listener: True button pressed");
 
+                updateQuestion();
+
                 Toast myToast = Toast.makeText(getApplicationContext(),"True button pressed",Toast.LENGTH_LONG);
                 myToast.show();
             }
@@ -75,11 +79,22 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Log.d("DebugInfo","Listener: False button pressed");
+                updateQuestion();
                 Toast.makeText(getApplicationContext(),"False button pressed",Toast.LENGTH_LONG).show();
             }
         });
 
 
 
+    }
+
+    public void updateQuestion(){
+//        mIndexQuestion = (mIndexQuestion + 1) % mQuestionBank.length;
+
+        mIndexQuestion++;
+        if(mIndexQuestion == mQuestionBank.length){mIndexQuestion=0;};
+
+        mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
+        mScoreTextView.setText(Integer.toString(mIndexQuestion + 1) + " of 13");
     }
 }
