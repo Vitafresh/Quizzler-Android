@@ -48,9 +48,5 @@ public class MainActivity extends Activity {
         Log.d("DebInfo","y=" + y);
 
 
-
-
-
-
     }
 }
