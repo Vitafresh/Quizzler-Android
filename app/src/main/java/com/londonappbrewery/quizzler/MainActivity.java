@@ -52,6 +52,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("DebugInfo","onCreate: Just launched");
+
+        if(savedInstanceState != null)
+        {
+            Log.d("DebugInfo","onCreate: savedInstatnceState");
+            mScore=savedInstanceState.getInt("ScoreKey");
+            mIndexQuestion=savedInstanceState.getInt("IndexQuestion");
+        }
+
         mTrueButton = (Button) findViewById(R.id.true_button);
         mFalseButton = (Button) findViewById(R.id.false_button);
 
@@ -60,14 +69,19 @@ public class MainActivity extends Activity {
 
         mProgressBar=(ProgressBar)findViewById(R.id.progress_bar);
         mProgressBar.setMax(mQuestionBank.length);  //Number of questions
-        mProgressBar.setProgress(1);                //First question (in progress)
+//        mProgressBar.setProgress(1);                //First question (in progress)
 
 
 
 //        TrueFalse firstQuestion = mQuestionBank[mIndexQuestion];
 //        int questionID = firstQuestion.getmQuestionID();
 //        mQuestionTextView.setText(questionID);
-        mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
+
+
+//        mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
+//        mScoreTextView.setText("Score: "+ Integer.toString(mScore) + " / " + mQuestionBank.length);
+        Log.d("DebugInfo","onCreate: call updateQuestionView");
+        updateQuestionView();
 
 
         //Set callback for True button
@@ -78,7 +92,6 @@ public class MainActivity extends Activity {
 
                 checkAnswer(true);
                 updateQuestion();
-
 //                Toast myToast = Toast.makeText(getApplicationContext(),"True button pressed",Toast.LENGTH_LONG);
 //                myToast.show();
             }
@@ -95,17 +108,17 @@ public class MainActivity extends Activity {
                 updateQuestion();
             }
         });
-
-
-
     }
 
     private void updateQuestion(){
 //        mIndexQuestion = (mIndexQuestion + 1) % mQuestionBank.length;
+
+
         mIndexQuestion++;
         if(mIndexQuestion >= mQuestionBank.length){
 //            mIndexQuestion--;
             //AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
+            mProgressBar.setProgress(mIndexQuestion);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Quiz completed");
             alert.setCancelable(false);
@@ -119,8 +132,19 @@ public class MainActivity extends Activity {
             alert.show();
             return;
         };
+//        mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
+//        mProgressBar.setProgress(mIndexQuestion+1);
+        Log.d("DebugInfo","updateQuestion: call updateQuestionView mIndexQuestion=" + mIndexQuestion);
+        updateQuestionView();
+    }
+
+    private void updateQuestionView()
+    {
+        Log.d("DebugInfo","updateQuestionView: entered");
         mQuestionTextView.setText(mQuestionBank[mIndexQuestion].getmQuestionID());
-        mProgressBar.setProgress(mIndexQuestion+1);
+        mProgressBar.setProgress(mIndexQuestion);
+        mScoreTextView.setText("Score: "+ Integer.toString(mScore) + " of ( " + Integer.toString(mIndexQuestion) + ") / " + mQuestionBank.length);
+        Log.d("DebugInfo","updateQuestionView: mIndexQuestion=" + mIndexQuestion);
     }
 
     private void checkAnswer(boolean userSelected){
@@ -130,7 +154,7 @@ public class MainActivity extends Activity {
         boolean correctAnswer = mQuestionBank[mIndexQuestion].isAnswer();
         if(userSelected==correctAnswer){
             mScore++;
-            mScoreTextView.setText("Score: "+ Integer.toString(mScore) + " of " + mQuestionBank.length);
+//            mScoreTextView.setText("Score: "+ Integer.toString(mScore) + " of " + mQuestionBank.length);
             Toast.makeText(getApplicationContext(), R.string.correct_toast, Toast.LENGTH_SHORT).show();
         }
         else {
@@ -138,4 +162,10 @@ public class MainActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("ScoreKey",mScore);
+        outState.putInt("IndexQuestion",mIndexQuestion);
+    }
 }
